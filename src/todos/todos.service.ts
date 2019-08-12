@@ -1,4 +1,4 @@
-import { Injectable, Inject} from '@nestjs/common';
+import { Injectable, Inject } from '@nestjs/common';
 import { CreateTodoDto } from './dto/createTodo.dto';
 import { Todo } from './entity/todo.entity';
 
@@ -13,19 +13,19 @@ export class TodosService {
   }
 
   async findById(ID: number): Promise<Todo> {
-    return await this.todosRepository.findById(ID);
+    console.log(this.todosRepository.findByPk(ID));
+    return await this.todosRepository.findByPk(ID);
   }
   async create(createTodoDto: CreateTodoDto): Promise<Todo> {
     return await this.todosRepository.create<Todo>(createTodoDto);
   }
 
   async update(id: number, newValue: CreateTodoDto): Promise<Todo | null> {
-
     let todo = await this.todosRepository.findById<Todo>(id);
 
     if (!todo.id) {
       // tslint:disable-next-line:no-console
-      console.error('user doesn\'t exist');
+      console.error("user doesn't exist");
     }
 
     todo = this._assign(todo, newValue);
@@ -34,7 +34,6 @@ export class TodosService {
   }
 
   public async delete(ID: number): Promise<number> {
-
     return await this.todosRepository.destroy({
       where: { ID },
     });
